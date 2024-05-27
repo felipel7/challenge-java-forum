@@ -8,6 +8,8 @@ import com.challenge.forum.repositories.CourseRepository;
 import com.challenge.forum.repositories.TopicRepository;
 import com.challenge.forum.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +34,8 @@ public class TopicService {
         return new TopicResponse(topicSaved);
     }
 
-    public List<TopicSummaryResponse> findAll() {
-        return topicRepository.findAll().stream().map(TopicSummaryResponse::new).toList();
+    public Page<TopicSummaryResponse> findAll(Pageable pageable) {
+        var topics = topicRepository.findAllByActiveTrue(pageable);
+        return topics.map(TopicSummaryResponse::new);
     }
 }
