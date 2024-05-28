@@ -40,7 +40,7 @@ public class TopicService {
     }
 
     public TopicDetailsDto getTopic(Long id) {
-        var topic = topicRepository.findById(id).orElseThrow(RuntimeException::new);
+        var topic = topicRepository.getReferenceById(id);
         return new TopicDetailsDto(topic);
     }
 }
