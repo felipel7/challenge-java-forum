@@ -1,18 +1,18 @@
 package com.challenge.forum.services;
 
-import com.challenge.forum.api.dto.topic.TopicRequest;
-import com.challenge.forum.api.dto.topic.TopicDto;
 import com.challenge.forum.api.dto.topic.TopicDetailsDto;
+import com.challenge.forum.api.dto.topic.TopicDto;
+import com.challenge.forum.api.dto.topic.TopicRequestDto;
+import com.challenge.forum.api.dto.topic.TopicRequestUpdateDto;
+import com.challenge.forum.api.utils.CopyUtils;
 import com.challenge.forum.domain.Topic;
-import com.challenge.forum.repositories.UserRepository;
 import com.challenge.forum.repositories.CourseRepository;
 import com.challenge.forum.repositories.TopicRepository;
+import com.challenge.forum.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TopicService {
@@ -26,11 +26,10 @@ public class TopicService {
     @Autowired
     private CourseRepository courseRepository;
 
-    public TopicDetailsDto saveTopic(TopicRequest topicRequest) {
-        var user = userRepository.getReferenceById(topicRequest.userId());
-        var course = courseRepository.getReferenceById(topicRequest.courseId());
-
-        var topic = topicRepository.save(new Topic(topicRequest, user, course));
+    public TopicDetailsDto saveTopic(TopicRequestDto topicRequestDto) {
+        var user = userRepository.getReferenceById(topicRequestDto.userId());
+        var course = courseRepository.getReferenceById(topicRequestDto.courseId());
+        var topic = topicRepository.save(new Topic(topicRequestDto, user, course));
         return new TopicDetailsDto(topic);
     }
 
@@ -41,6 +40,13 @@ public class TopicService {
 
     public TopicDetailsDto getTopic(Long id) {
         var topic = topicRepository.getReferenceById(id);
+        return new TopicDetailsDto(topic);
+    }
+
+    public TopicDetailsDto updateTopic(TopicRequestUpdateDto topicRequest) {
+        var existingTopic = topicRepository.getReferenceById(topicRequest.id());
+        CopyUtils.copyNonNullProperties(topicRequest, existingTopic);
+        var topic = topicRepository.save(existingTopic);
         return new TopicDetailsDto(topic);
     }
 }

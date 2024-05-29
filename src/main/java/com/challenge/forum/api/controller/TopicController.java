@@ -2,7 +2,8 @@ package com.challenge.forum.api.controller;
 
 import com.challenge.forum.api.dto.topic.TopicDetailsDto;
 import com.challenge.forum.api.dto.topic.TopicDto;
-import com.challenge.forum.api.dto.topic.TopicRequest;
+import com.challenge.forum.api.dto.topic.TopicRequestDto;
+import com.challenge.forum.api.dto.topic.TopicRequestUpdateDto;
 import com.challenge.forum.services.TopicService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -22,7 +23,8 @@ public class TopicController {
     private TopicService topicService;
 
     @GetMapping
-    public ResponseEntity<Page<TopicDto>> getTopics(@PageableDefault(size = 5) Pageable pageable
+    public ResponseEntity<Page<TopicDto>> getTopics(
+        @PageableDefault(size = 10) Pageable pageable
     ) {
         var page = topicService.getTopicsPage(pageable);
         return ResponseEntity.ok(page);
@@ -36,12 +38,21 @@ public class TopicController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<TopicDetailsDto> create(@Valid @RequestBody TopicRequest topicRequest,
-                                                  UriComponentsBuilder uriComponentsBuilder
+    public ResponseEntity<TopicDetailsDto> createTopic(
+        @Valid @RequestBody TopicRequestDto topicRequestDto,
+        UriComponentsBuilder uriComponentsBuilder
     ) {
-        var topic = topicService.createTopic(topicRequest);
+        var topic = topicService.saveTopic(topicRequestDto);
         var uri = uriComponentsBuilder.path("/topics/{id}").buildAndExpand(topic.id()).toUri();
-
         return ResponseEntity.created(uri).body(topic);
+    }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity<TopicDetailsDto> updateTopic(
+        @Valid @RequestBody TopicRequestUpdateDto topicRequestUpdateDto
+    ) {
+        var topic = topicService.updateTopic(topicRequestUpdateDto);
+        return ResponseEntity.ok(topic);
     }
 }

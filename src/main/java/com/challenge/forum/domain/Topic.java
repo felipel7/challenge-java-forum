@@ -1,6 +1,6 @@
 package com.challenge.forum.domain;
 
-import com.challenge.forum.api.dto.topic.TopicRequest;
+import com.challenge.forum.api.dto.topic.TopicRequestDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,15 +46,28 @@ public class Topic {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public Topic(TopicRequest topicRequest, User user, Course course) {
-        var date = LocalDateTime.now();
-        this.title = topicRequest.title();
-        this.content = topicRequest.content();
+    public Topic(
+        TopicRequestDto topicRequestDto,
+        User user,
+        Course course
+    ) {
+        this.title = topicRequestDto.title();
+        this.content = topicRequestDto.content();
         this.active = true;
         this.status = Status.NOT_ANSWERED;
         this.user = user;
         this.course = course;
-        this.createdAt = date;
-        this.updatedAt = date;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        LocalDateTime now = LocalDateTime.now();
+        createdAt = now;
+        updatedAt = now;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 }
