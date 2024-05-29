@@ -44,9 +44,13 @@ public class TopicService {
     }
 
     public TopicDetailsDto updateTopic(TopicRequestUpdateDto topicRequest) {
-        var existingTopic = topicRepository.getReferenceById(topicRequest.id());
-        CopyUtils.copyNonNullProperties(topicRequest, existingTopic);
-        var topic = topicRepository.save(existingTopic);
+        var topic = topicRepository.getReferenceById(topicRequest.id());
+        CopyUtils.copyNonNullProperties(topicRequest, topic);
         return new TopicDetailsDto(topic);
+    }
+
+    public void deleteTopic(Long id) {
+        var topic = topicRepository.getReferenceById(id);
+        topic.delete();
     }
 }

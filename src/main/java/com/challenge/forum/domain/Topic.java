@@ -70,4 +70,8 @@ public class Topic {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    public void delete() {
+        this.active = false;
+    }
 }

@@ -55,4 +55,12 @@ public class TopicController {
         var topic = topicService.updateTopic(topicRequestUpdateDto);
         return ResponseEntity.ok(topic);
     }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity deleteTopic(@PathVariable Long id) {
+        topicService.deleteTopic(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
