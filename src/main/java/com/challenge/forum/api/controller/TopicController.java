@@ -15,8 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import static com.challenge.forum.api.utils.Constants.*;
+
 @RestController
-@RequestMapping("/topics")
+@RequestMapping(TOPIC_CONTROLLER_ROUTE_MAP)
 public class TopicController {
 
     @Autowired
@@ -30,7 +32,7 @@ public class TopicController {
         return ResponseEntity.ok(page);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(GET_DETAILS_TOPIC_ROUTE)
     public ResponseEntity<TopicDetailsDto> getTopic(@PathVariable Long id) {
         var topic = topicService.getTopic(id);
         return ResponseEntity.ok(topic);
@@ -56,7 +58,7 @@ public class TopicController {
         return ResponseEntity.ok(topic);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(DELETE_TOPIC_ROUTE)
     @Transactional
     public ResponseEntity deleteTopic(@PathVariable Long id) {
         topicService.deleteTopic(id);

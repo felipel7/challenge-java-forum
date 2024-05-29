@@ -12,10 +12,10 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+import static com.challenge.forum.api.utils.Constants.ISSUER;
+
 @Service
 public class TokenService {
-
-    private static final String ISSUER = "api.forum";
 
     @Value("${api.security.token.secret}")
     private String secret;
