@@ -30,18 +30,12 @@ public class SecurityConfiguration {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                            .authorizeHttpRequests(a -> a.requestMatchers(HttpMethod.POST,
-                                                                         POST_USER_LOGIN_ROUTE,
-                                                                         POST_USER_REGISTER_ROUTE
-                                                        )
-                                                        .permitAll()
-                                                        .requestMatchers(HttpMethod.GET,
-                                                                         TOPIC_CONTROLLER_ROUTE_MAP,
-                                                                         TOPIC_ROUTE_WITH_WILDCARD,
-                                                                         COURSE_CONTROLLER_ROUTE_MAP
-                                                        )
-                                                        .permitAll()
-                                                        .anyRequest()
-                                                        .authenticated())
+                                                                         AUTHENTICATION_ROUTE_WITH_WILDCARD
+                           ).permitAll().requestMatchers(HttpMethod.GET,
+                                                         TOPIC_CONTROLLER_ROUTE_MAP,
+                                                         TOPIC_ROUTE_WITH_WILDCARD,
+                                                         COURSE_CONTROLLER_ROUTE_MAP
+                           ).permitAll().anyRequest().authenticated())
                            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                            .build();
     }

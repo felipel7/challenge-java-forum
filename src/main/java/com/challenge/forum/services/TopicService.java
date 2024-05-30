@@ -1,8 +1,8 @@
 package com.challenge.forum.services;
 
+import com.challenge.forum.api.dto.topic.TopicCreateRequest;
 import com.challenge.forum.api.dto.topic.TopicDetailsResponse;
 import com.challenge.forum.api.dto.topic.TopicResponse;
-import com.challenge.forum.api.dto.topic.TopicCreateRequest;
 import com.challenge.forum.api.dto.topic.TopicUpdateRequest;
 import com.challenge.forum.api.utils.CopyUtils;
 import com.challenge.forum.domain.Topic;
@@ -29,7 +29,10 @@ public class TopicService {
     public TopicDetailsResponse saveTopic(TopicCreateRequest topicCreateRequest) {
         var user = userRepository.getReferenceById(topicCreateRequest.userId());
         var course = courseRepository.getReferenceById(topicCreateRequest.courseId());
-        var topic = topicRepository.save(new Topic(topicCreateRequest, user, course));
+        var topic = new Topic(topicCreateRequest);
+        topic.setCourse(course);
+        topic.setUser(user);
+        topicRepository.save(topic);
         return new TopicDetailsResponse(topic);
     }
 

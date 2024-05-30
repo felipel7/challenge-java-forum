@@ -8,6 +8,7 @@ public class Constants {
 
     //    Routes
     public static final String AUTHENTICATION_CONTROLLER_ROUTE_MAP = "/auth";
+    public static final String AUTHENTICATION_ROUTE_WITH_WILDCARD = "/auth/*";
     public static final String POST_USER_LOGIN_ROUTE = "/login";
     public static final String POST_USER_REGISTER_ROUTE = "/register";
 

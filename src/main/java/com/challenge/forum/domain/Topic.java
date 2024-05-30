@@ -46,17 +46,11 @@ public class Topic {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public Topic(
-        TopicCreateRequest topicCreateRequest,
-        User user,
-        Course course
-    ) {
+    public Topic(TopicCreateRequest topicCreateRequest) {
         this.title = topicCreateRequest.title();
         this.content = topicCreateRequest.content();
         this.active = true;
         this.status = Status.NOT_ANSWERED;
-        this.user = user;
-        this.course = course;
     }
 
     @PrePersist

@@ -40,7 +40,7 @@ public class TopicController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<TopicDetailsResponse> createTopic(
+    public ResponseEntity<TopicDetailsResponse> saveTopic(
         @Valid @RequestBody TopicCreateRequest topicCreateRequest,
         UriComponentsBuilder uriComponentsBuilder
     ) {
