@@ -19,6 +19,11 @@ public class Constants {
 
     public static final String COURSE_CONTROLLER_ROUTE_MAP = "/courses";
 
+    public static final String REPLY_CONTROLLER_ROUTE_MAP = "/replies";
+    public static final String REPLY_ROUTE_WITH_WILDCARD = "/replies/*";
+    public static final String GET_REPLIES_FROM_TOPIC_ROUTE = "/{id}";
+    public static final String DELETE_REPLY_ROUTE = "/{id}";
+
     //    Exceptions
     public static final String USERNAME_REGISTERED = "Username or Email already taken";
 }

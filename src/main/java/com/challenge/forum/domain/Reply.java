@@ -1,7 +1,9 @@
 package com.challenge.forum.domain;
 
+import com.challenge.forum.api.dto.reply.ReplyCreateRequest;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -9,13 +11,14 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Reply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
-    private Boolean solution;
+    private Boolean solution = false;
 
     @ManyToOne
     @JoinColumn(name = "topic_id")
@@ -43,5 +46,9 @@ public class Reply {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    public Reply(ReplyCreateRequest replyCreateRequest) {
+        this.content = replyCreateRequest.content();
     }
 }

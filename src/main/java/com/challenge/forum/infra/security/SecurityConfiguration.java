@@ -32,8 +32,9 @@ public class SecurityConfiguration {
                            .authorizeHttpRequests(a -> a.requestMatchers(HttpMethod.POST,
                                                                          AUTHENTICATION_ROUTE_WITH_WILDCARD
                            ).permitAll().requestMatchers(HttpMethod.GET,
-                                                         TOPIC_CONTROLLER_ROUTE_MAP,
+                                                         REPLY_ROUTE_WITH_WILDCARD,
                                                          TOPIC_ROUTE_WITH_WILDCARD,
+                                                         TOPIC_CONTROLLER_ROUTE_MAP,
                                                          COURSE_CONTROLLER_ROUTE_MAP
                            ).permitAll().anyRequest().authenticated())
                            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

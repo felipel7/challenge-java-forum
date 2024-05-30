@@ -1,6 +1,6 @@
 package com.challenge.forum.api.dto.topic;
 
-import com.challenge.forum.domain.Reply;
+import com.challenge.forum.api.dto.reply.ReplyResponse;
 import com.challenge.forum.domain.Status;
 import com.challenge.forum.domain.Topic;
 
@@ -12,7 +12,7 @@ public record TopicDetailsResponse(
     String title,
     String content,
     Status status,
-    List<Reply> replies,
+    List<ReplyResponse> replies,
     LocalDateTime createdAt
 ) {
     public TopicDetailsResponse(Topic topic) {
@@ -21,7 +21,7 @@ public record TopicDetailsResponse(
             topic.getTitle(),
             topic.getContent(),
             topic.getStatus(),
-            topic.getReplies(),
+            topic.getReplies().stream().map(ReplyResponse::new).toList(),
             topic.getCreatedAt()
         );
     }
