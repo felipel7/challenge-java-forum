@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.challenge.forum.api.utils.Constants.*;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -27,14 +29,19 @@ public class SecurityConfiguration {
         throws Exception {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                           .authorizeHttpRequests(a -> {
-                               a.requestMatchers(HttpMethod.POST, "/auth/**")
-                                .permitAll()
-                                .requestMatchers(HttpMethod.GET, "/topics", "/topics/**")
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated();
-                           })
+                           .authorizeHttpRequests(a -> a.requestMatchers(HttpMethod.POST,
+                                                                         POST_USER_LOGIN_ROUTE,
+                                                                         POST_USER_REGISTER_ROUTE
+                                                        )
+                                                        .permitAll()
+                                                        .requestMatchers(HttpMethod.GET,
+                                                                         TOPIC_CONTROLLER_ROUTE_MAP,
+                                                                         TOPIC_ROUTE_WITH_WILDCARD,
+                                                                         COURSE_CONTROLLER_ROUTE_MAP
+                                                        )
+                                                        .permitAll()
+                                                        .anyRequest()
+                                                        .authenticated())
                            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                            .build();
     }
