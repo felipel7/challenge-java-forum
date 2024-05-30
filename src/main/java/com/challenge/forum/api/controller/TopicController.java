@@ -1,9 +1,9 @@
 package com.challenge.forum.api.controller;
 
-import com.challenge.forum.api.dto.topic.TopicDetailsDto;
-import com.challenge.forum.api.dto.topic.TopicDto;
-import com.challenge.forum.api.dto.topic.TopicRequestDto;
-import com.challenge.forum.api.dto.topic.TopicRequestUpdateDto;
+import com.challenge.forum.api.dto.topic.TopicDetailsResponse;
+import com.challenge.forum.api.dto.topic.TopicResponse;
+import com.challenge.forum.api.dto.topic.TopicCreateRequest;
+import com.challenge.forum.api.dto.topic.TopicUpdateRequest;
 import com.challenge.forum.services.TopicService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -25,7 +25,7 @@ public class TopicController {
     private TopicService topicService;
 
     @GetMapping
-    public ResponseEntity<Page<TopicDto>> getTopics(
+    public ResponseEntity<Page<TopicResponse>> getTopics(
         @PageableDefault(size = 10) Pageable pageable
     ) {
         var page = topicService.getTopicsPage(pageable);
@@ -33,28 +33,28 @@ public class TopicController {
     }
 
     @GetMapping(GET_DETAILS_TOPIC_ROUTE)
-    public ResponseEntity<TopicDetailsDto> getTopic(@PathVariable Long id) {
+    public ResponseEntity<TopicDetailsResponse> getTopic(@PathVariable Long id) {
         var topic = topicService.getTopic(id);
         return ResponseEntity.ok(topic);
     }
 
     @PostMapping
     @Transactional
-    public ResponseEntity<TopicDetailsDto> createTopic(
-        @Valid @RequestBody TopicRequestDto topicRequestDto,
+    public ResponseEntity<TopicDetailsResponse> createTopic(
+        @Valid @RequestBody TopicCreateRequest topicCreateRequest,
         UriComponentsBuilder uriComponentsBuilder
     ) {
-        var topic = topicService.saveTopic(topicRequestDto);
+        var topic = topicService.saveTopic(topicCreateRequest);
         var uri = uriComponentsBuilder.path("/topics/{id}").buildAndExpand(topic.id()).toUri();
         return ResponseEntity.created(uri).body(topic);
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity<TopicDetailsDto> updateTopic(
-        @Valid @RequestBody TopicRequestUpdateDto topicRequestUpdateDto
+    public ResponseEntity<TopicDetailsResponse> updateTopic(
+        @Valid @RequestBody TopicUpdateRequest topicUpdateRequest
     ) {
-        var topic = topicService.updateTopic(topicRequestUpdateDto);
+        var topic = topicService.updateTopic(topicUpdateRequest);
         return ResponseEntity.ok(topic);
     }
 

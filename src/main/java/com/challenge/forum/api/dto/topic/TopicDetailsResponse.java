@@ -7,7 +7,7 @@ import com.challenge.forum.domain.Topic;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record TopicDetailsDto(
+public record TopicDetailsResponse(
     Long id,
     String title,
     String content,
@@ -15,7 +15,7 @@ public record TopicDetailsDto(
     List<Reply> replies,
     LocalDateTime createdAt
 ) {
-    public TopicDetailsDto(Topic topic) {
+    public TopicDetailsResponse(Topic topic) {
         this(
             topic.getId(),
             topic.getTitle(),

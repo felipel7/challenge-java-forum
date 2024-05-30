@@ -4,7 +4,7 @@ import com.challenge.forum.domain.Status;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public record TopicRequestUpdateDto(
+public record TopicUpdateRequest(
     @NotNull
     Long id,
 

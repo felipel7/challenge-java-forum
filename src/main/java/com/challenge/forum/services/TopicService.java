@@ -1,9 +1,9 @@
 package com.challenge.forum.services;
 
-import com.challenge.forum.api.dto.topic.TopicDetailsDto;
-import com.challenge.forum.api.dto.topic.TopicDto;
-import com.challenge.forum.api.dto.topic.TopicRequestDto;
-import com.challenge.forum.api.dto.topic.TopicRequestUpdateDto;
+import com.challenge.forum.api.dto.topic.TopicDetailsResponse;
+import com.challenge.forum.api.dto.topic.TopicResponse;
+import com.challenge.forum.api.dto.topic.TopicCreateRequest;
+import com.challenge.forum.api.dto.topic.TopicUpdateRequest;
 import com.challenge.forum.api.utils.CopyUtils;
 import com.challenge.forum.domain.Topic;
 import com.challenge.forum.repositories.CourseRepository;
@@ -26,27 +26,27 @@ public class TopicService {
     @Autowired
     private CourseRepository courseRepository;
 
-    public TopicDetailsDto saveTopic(TopicRequestDto topicRequestDto) {
-        var user = userRepository.getReferenceById(topicRequestDto.userId());
-        var course = courseRepository.getReferenceById(topicRequestDto.courseId());
-        var topic = topicRepository.save(new Topic(topicRequestDto, user, course));
-        return new TopicDetailsDto(topic);
+    public TopicDetailsResponse saveTopic(TopicCreateRequest topicCreateRequest) {
+        var user = userRepository.getReferenceById(topicCreateRequest.userId());
+        var course = courseRepository.getReferenceById(topicCreateRequest.courseId());
+        var topic = topicRepository.save(new Topic(topicCreateRequest, user, course));
+        return new TopicDetailsResponse(topic);
     }
 
-    public Page<TopicDto> getTopicsPage(Pageable pageable) {
+    public Page<TopicResponse> getTopicsPage(Pageable pageable) {
         var topics = topicRepository.findAllByActiveTrue(pageable);
-        return topics.map(TopicDto::new);
+        return topics.map(TopicResponse::new);
     }
 
-    public TopicDetailsDto getTopic(Long id) {
+    public TopicDetailsResponse getTopic(Long id) {
         var topic = topicRepository.getReferenceById(id);
-        return new TopicDetailsDto(topic);
+        return new TopicDetailsResponse(topic);
     }
 
-    public TopicDetailsDto updateTopic(TopicRequestUpdateDto topicRequest) {
+    public TopicDetailsResponse updateTopic(TopicUpdateRequest topicRequest) {
         var topic = topicRepository.getReferenceById(topicRequest.id());
         CopyUtils.copyNonNullProperties(topicRequest, topic);
-        return new TopicDetailsDto(topic);
+        return new TopicDetailsResponse(topic);
     }
 
     public void deleteTopic(Long id) {

@@ -4,18 +4,13 @@ import com.challenge.forum.domain.Topic;
 
 import java.time.LocalDateTime;
 
-public record TopicDto(
+public record TopicResponse(
     Long id,
     String title,
     String content,
     LocalDateTime createdAt
 ) {
-    public TopicDto(Topic topic) {
-        this(
-            topic.getId(),
-            topic.getTitle(),
-            topic.getContent(),
-            topic.getCreatedAt()
-        );
+    public TopicResponse(Topic topic) {
+        this(topic.getId(), topic.getTitle(), topic.getContent(), topic.getCreatedAt());
     }
 }

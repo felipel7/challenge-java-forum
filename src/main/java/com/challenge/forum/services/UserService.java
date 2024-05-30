@@ -1,7 +1,7 @@
 package com.challenge.forum.services;
 
-import com.challenge.forum.api.dto.user.UserRequestDto;
-import com.challenge.forum.api.dto.user.UserResponseDto;
+import com.challenge.forum.api.dto.user.UserCreateRequest;
+import com.challenge.forum.api.dto.user.UserResponse;
 import com.challenge.forum.domain.User;
 import com.challenge.forum.exceptions.businessExceptions.UserAlreadyExistsException;
 import com.challenge.forum.repositories.UserRepository;
@@ -17,15 +17,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserResponseDto registerUser(UserRequestDto userRequestDto) {
+    public UserResponse registerUser(UserCreateRequest userCreateRequest) {
         var userExists = userRepository.existsByUsernameOrEmail(
-            userRequestDto.getUsername(), userRequestDto.getEmail());
+            userCreateRequest.getUsername(), userCreateRequest.getEmail());
         if (userExists) throw new UserAlreadyExistsException(USERNAME_REGISTERED);
 
-        var encodedPassword = encryptPassword(userRequestDto.getPassword());
-        userRequestDto.setPassword(encodedPassword);
-        var user = userRepository.save(new User(userRequestDto));
-        return new UserResponseDto(user);
+        var encodedPassword = encryptPassword(userCreateRequest.getPassword());
+        userCreateRequest.setPassword(encodedPassword);
+        var user = userRepository.save(new User(userCreateRequest));
+        return new UserResponse(user);
     }
 
     private String encryptPassword(String password) {

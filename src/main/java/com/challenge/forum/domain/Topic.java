@@ -1,6 +1,6 @@
 package com.challenge.forum.domain;
 
-import com.challenge.forum.api.dto.topic.TopicRequestDto;
+import com.challenge.forum.api.dto.topic.TopicCreateRequest;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,12 +47,12 @@ public class Topic {
     private LocalDateTime updatedAt;
 
     public Topic(
-        TopicRequestDto topicRequestDto,
+        TopicCreateRequest topicCreateRequest,
         User user,
         Course course
     ) {
-        this.title = topicRequestDto.title();
-        this.content = topicRequestDto.content();
+        this.title = topicCreateRequest.title();
+        this.content = topicCreateRequest.content();
         this.active = true;
         this.status = Status.NOT_ANSWERED;
         this.user = user;

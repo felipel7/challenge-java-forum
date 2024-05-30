@@ -1,9 +1,9 @@
 package com.challenge.forum.api.controller;
 
-import com.challenge.forum.api.dto.token.RequestTokenDto;
-import com.challenge.forum.api.dto.token.ResponseTokenDto;
-import com.challenge.forum.api.dto.user.UserRequestDto;
-import com.challenge.forum.api.dto.user.UserResponseDto;
+import com.challenge.forum.api.dto.token.TokenRequest;
+import com.challenge.forum.api.dto.token.TokenResponse;
+import com.challenge.forum.api.dto.user.UserCreateRequest;
+import com.challenge.forum.api.dto.user.UserResponse;
 import com.challenge.forum.domain.User;
 import com.challenge.forum.services.TokenService;
 import com.challenge.forum.services.UserService;
@@ -31,20 +31,20 @@ public class AuthenticationController {
     private UserService userService;
 
     @PostMapping(POST_USER_LOGIN_ROUTE)
-    public ResponseEntity login(@RequestBody @Valid RequestTokenDto requestTokenDto) {
-        var authToken = new UsernamePasswordAuthenticationToken(requestTokenDto.username(), requestTokenDto.password());
+    public ResponseEntity login(@RequestBody @Valid TokenRequest tokenRequest) {
+        var authToken = new UsernamePasswordAuthenticationToken(tokenRequest.username(), tokenRequest.password());
         var auth = authenticationManager.authenticate(authToken);
         var token = tokenService.generateToken((User) auth.getPrincipal());
 
-        return ResponseEntity.ok(new ResponseTokenDto(token));
+        return ResponseEntity.ok(new TokenResponse(token));
     }
 
     @PostMapping(POST_USER_REGISTER_ROUTE)
-    public ResponseEntity<UserResponseDto> register(
-        @RequestBody @Valid UserRequestDto userRequestDto,
+    public ResponseEntity<UserResponse> register(
+        @RequestBody @Valid UserCreateRequest userCreateRequest,
         UriComponentsBuilder uriComponentsBuilder
     ) {
-        var user = userService.registerUser(userRequestDto);
+        var user = userService.registerUser(userCreateRequest);
         var uri = uriComponentsBuilder.path("/{id}").buildAndExpand(user.id()).toUri();
         return ResponseEntity.created(uri).body(user);
     }

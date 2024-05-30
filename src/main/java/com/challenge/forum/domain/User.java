@@ -1,6 +1,6 @@
 package com.challenge.forum.domain;
 
-import com.challenge.forum.api.dto.user.UserRequestDto;
+import com.challenge.forum.api.dto.user.UserCreateRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,11 +28,11 @@ public class User implements UserDetails {
     private String username;
     private String password;
 
-    public User(UserRequestDto userRequestDto) {
-        this.name = userRequestDto.getName();
-        this.email = userRequestDto.getEmail();
-        this.password = userRequestDto.getPassword();
-        this.username = userRequestDto.getUsername();
+    public User(UserCreateRequest userCreateRequest) {
+        this.name = userCreateRequest.getName();
+        this.email = userCreateRequest.getEmail();
+        this.password = userCreateRequest.getPassword();
+        this.username = userCreateRequest.getUsername();
     }
 
     @Override

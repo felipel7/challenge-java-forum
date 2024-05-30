@@ -3,7 +3,7 @@ package com.challenge.forum.api.dto.topic;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record TopicRequestDto(
+public record TopicCreateRequest(
     @NotBlank
     @Size(max = 255)
     String title,
