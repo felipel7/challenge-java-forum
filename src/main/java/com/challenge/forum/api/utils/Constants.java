@@ -42,5 +42,6 @@ public class Constants {
     public static final String DOCS_AUTH_TAG_DESCRIPTION = "Authentication and Authorization";
 
     //    Exceptions
-    public static final String USERNAME_REGISTERED = "Username or Email already taken";
+    public static final String USER_ALREADY_REGISTERED = "Username or Email already taken";
+    public static final String TOPIC_ALREADY_REGISTERED = "This topic is duplicated";
 }

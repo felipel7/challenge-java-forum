@@ -1,5 +1,6 @@
 package com.challenge.forum.exceptions;
 
+import com.challenge.forum.exceptions.businessExceptions.DuplicateTopicException;
 import com.challenge.forum.exceptions.businessExceptions.UserAlreadyExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ErrorField> handleUserAlreadyExistsException(UserAlreadyExistsException e) {
+        var error = new ErrorField(e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(DuplicateTopicException.class)
+    public ResponseEntity<ErrorField> handleDuplicateTopicException(DuplicateTopicException e) {
         var error = new ErrorField(e.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }

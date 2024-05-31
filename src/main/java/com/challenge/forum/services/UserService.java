@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static com.challenge.forum.api.utils.Constants.USERNAME_REGISTERED;
+import static com.challenge.forum.api.utils.Constants.*;
 
 @Service
 public class UserService {
@@ -20,7 +20,7 @@ public class UserService {
     public UserResponse registerUser(UserCreateRequest userCreateRequest) {
         var userExists = userRepository.existsByUsernameOrEmail(
             userCreateRequest.getUsername(), userCreateRequest.getEmail());
-        if (userExists) throw new UserAlreadyExistsException(USERNAME_REGISTERED);
+        if (userExists) throw new UserAlreadyExistsException(USER_ALREADY_REGISTERED);
 
         var encodedPassword = encryptPassword(userCreateRequest.getPassword());
         userCreateRequest.setPassword(encodedPassword);
