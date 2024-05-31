@@ -7,18 +7,23 @@ import com.challenge.forum.api.dto.user.UserResponse;
 import com.challenge.forum.domain.User;
 import com.challenge.forum.services.TokenService;
 import com.challenge.forum.services.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static com.challenge.forum.api.utils.Constants.*;
 
 @RestController
 @RequestMapping(AUTHENTICATION_CONTROLLER_ROUTE_MAP)
+@Tag(name = DOCS_AUTH_TAG_NAME, description = DOCS_AUTH_TAG_DESCRIPTION)
 public class AuthenticationController {
 
     @Autowired
@@ -31,7 +36,7 @@ public class AuthenticationController {
     private UserService userService;
 
     @PostMapping(POST_USER_LOGIN_ROUTE)
-    public ResponseEntity login(@RequestBody @Valid TokenRequest tokenRequest) {
+    public ResponseEntity<TokenResponse> login(@RequestBody @Valid TokenRequest tokenRequest) {
         var authToken = new UsernamePasswordAuthenticationToken(tokenRequest.username(), tokenRequest.password());
         var auth = authenticationManager.authenticate(authToken);
         var token = tokenService.generateToken((User) auth.getPrincipal());

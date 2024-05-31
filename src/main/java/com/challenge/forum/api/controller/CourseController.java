@@ -4,6 +4,8 @@ import com.challenge.forum.api.dto.course.CourseRequest;
 import com.challenge.forum.api.dto.course.CourseResponse;
 import com.challenge.forum.api.dto.course.CourseUpdateRequest;
 import com.challenge.forum.services.CourseService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import static com.challenge.forum.api.utils.Constants.*;
 
 @RestController
 @RequestMapping(COURSE_CONTROLLER_ROUTE_MAP)
+@Tag(name = DOCS_COURSE_TAG_NAME)
 public class CourseController {
 
     @Autowired
@@ -33,6 +36,7 @@ public class CourseController {
 
     @PostMapping
     @Transactional
+    @SecurityRequirement(name = DOCS_BEARER_KEY)
     public ResponseEntity<CourseResponse> saveCourse(
         @Valid @RequestBody CourseRequest courseRequest,
         UriComponentsBuilder uriComponentsBuilder
@@ -44,6 +48,7 @@ public class CourseController {
 
     @PutMapping
     @Transactional
+    @SecurityRequirement(name = DOCS_BEARER_KEY)
     public ResponseEntity<CourseResponse> updateCourse(
         @Valid @RequestBody CourseUpdateRequest courseUpdateRequest
     ) {

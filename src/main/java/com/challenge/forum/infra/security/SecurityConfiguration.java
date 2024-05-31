@@ -27,18 +27,24 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity)
         throws Exception {
-        return httpSecurity.csrf(AbstractHttpConfigurer::disable)
-                           .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                           .authorizeHttpRequests(a -> a.requestMatchers(HttpMethod.POST,
-                                                                         AUTHENTICATION_ROUTE_WITH_WILDCARD
-                           ).permitAll().requestMatchers(HttpMethod.GET,
-                                                         REPLY_ROUTE_WITH_WILDCARD,
-                                                         TOPIC_ROUTE_WITH_WILDCARD,
-                                                         TOPIC_CONTROLLER_ROUTE_MAP,
-                                                         COURSE_CONTROLLER_ROUTE_MAP
-                           ).permitAll().anyRequest().authenticated())
-                           .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                           .build();
+        return httpSecurity
+            .csrf(AbstractHttpConfigurer::disable)
+            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(a -> a
+                .requestMatchers(HttpMethod.POST, AUTHENTICATION_ROUTE_WITH_WILDCARD).permitAll()
+                .requestMatchers(
+                    HttpMethod.GET,
+                    REPLY_ROUTE_WITH_WILDCARD,
+                    TOPIC_ROUTE_WITH_WILDCARD,
+                    TOPIC_CONTROLLER_ROUTE_MAP,
+                    COURSE_CONTROLLER_ROUTE_MAP
+                ).permitAll()
+                .requestMatchers(SWAGGER_LIST).permitAll()
+                .anyRequest()
+                .authenticated()
+            )
+            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
     }
 
     @Bean
